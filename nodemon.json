@@ -1,0 +1,6 @@
+{
+  "watch": ["backend"],
+  "ext": "ts,json",
+  "ignore": [],
+  "exec": "ts-node -r tsconfig-paths/register ./backend/server.ts"
+}
