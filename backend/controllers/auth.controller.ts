@@ -167,7 +167,7 @@ export const logout = async(req: Request, res: Response) => {
             deleteRefreshToken(decoded.userId, decoded.refreshToken);
         }
 
-        req.
+        
 
         res.json({
             message: "Logged out successfully",
