@@ -1,6 +1,18 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+export interface IUser extends Document {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    refreshTokens?: { token: string; expiresAt: Date }[];
+    cart?: {
+        quantity: number;
+        product: mongoose.Types.ObjectId;
+    };
+    comparePassword(password: string): Promise<boolean>;
+}
 
 const tokenSchema = new mongoose.Schema({
     token: String,
@@ -28,7 +40,7 @@ const userSchema = new mongoose.Schema({
     cart: {
         quantity: {
             type: Number,
-            default: 1,
+            default: 0,
         },
         product:{
             type: mongoose.Schema.Types.ObjectId,
@@ -41,6 +53,8 @@ const userSchema = new mongoose.Schema({
         default: "customer",
     },
 
+},{
+    timestamps: true
 });
 
 userSchema.index({ "refreshTokens.expiresAt": 1 }, { expireAfterSeconds: 0 });
@@ -65,6 +79,6 @@ userSchema.methods.comparePassword = async function (password: string) {
     return bcrypt.compare(password, this.password);
 }
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;
