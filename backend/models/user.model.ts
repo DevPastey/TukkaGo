@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 
+const tokenSchema = new mongoose.Schema({
+    token: String,
+    expiresAt: Date,
+}, {_id: false});
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -20,6 +24,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "Password is required!"],
         min: [6, "Must be at least 6 characters long"]
     },
+    refreshTokens: [tokenSchema],
     cart: {
         quantity: {
             type: Number,
@@ -30,10 +35,19 @@ const userSchema = new mongoose.Schema({
             ref: "Product",
         }
     },
+    role: {
+        type: String,
+        enum: ["customer", "admin"],
+        default: "customer",
+    },
 
 });
 
+userSchema.index({ "refreshTokens.expiresAt": 1 }, { expireAfterSeconds: 0 });
 
+
+
+//pre-save password before saviing to the database
 userSchema.pre("save", async function(next) {
     if (!this.isModified("password")) next();
 
@@ -47,6 +61,9 @@ userSchema.pre("save", async function(next) {
 });
 
 
+userSchema.methods.comparePassword = async function (password: string) {
+    return bcrypt.compare(password, this.password);
+}
 
 const User = mongoose.model("User", userSchema);
 
