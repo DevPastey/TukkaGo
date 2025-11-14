@@ -6,6 +6,7 @@ export interface IUser extends Document {
     email: string;
     password: string;
     role: string;
+    avater: String;
     refreshTokens?: { token: string; expiresAt: Date }[];
     cart?: {
         quantity: number;
@@ -30,6 +31,10 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         lowercase: true,
+    },
+    avatar: {
+        type: String,
+        required: true,
     },
     password: {
         type: String,

@@ -5,7 +5,7 @@ import { View, Text } from 'react-native';
 export default function _Layout() {
 
 
-    const user = true;
+    const user = false;
     if (!user) return <Redirect href="/sign-in" />;
   return (
     <Slot />

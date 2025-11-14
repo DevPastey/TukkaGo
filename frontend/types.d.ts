@@ -79,9 +79,10 @@ interface CustomHeaderProps {
 interface CustomInputProps {
     placeholder?: string;
     value?: string;
-    onChangeText?: (text: string) => void;
+    onChangeText?: (e: TextInputChangeEvent) => void;
     label: string;
     secureTextEntry?: boolean;
+    autoCorrect?: boolean;
     keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
 }
 
