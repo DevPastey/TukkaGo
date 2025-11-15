@@ -5,6 +5,7 @@ import { FormShape, LoginProps } from "@/types/types";
 import { Alert } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { router } from "expo-router";
+import { setToken } from "@/lib/tokenService";
 
 interface UserStore {
   user: FormShape | null; // Replace `any` with your User type if you have one
@@ -157,11 +158,13 @@ export const useUserStore = create<UserStore>((set, get) => ({
     }
   
     set({ accessToken: token });
+    setToken(token);
   },
   
   loadAccessToken: async () => {
     const token = await SecureStore.getItemAsync("accessToken");
     set({ accessToken: token });
+    setToken(token);
   },
   
 

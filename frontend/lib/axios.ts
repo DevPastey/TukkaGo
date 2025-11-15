@@ -1,6 +1,6 @@
-import { useUserStore } from "@/stores/useUserStore";
 import axios from "axios";
 import constants from "expo-constants";
+import { getToken } from "./tokenService";
 
 const MODE = constants.expoConfig?.extra?.MODE;
 
@@ -12,13 +12,12 @@ const axiosInstance = axios.create({
 
 // Add a request interceptor
 // Attach token automatically
-axiosInstance.interceptors.request.use((config) => {
-  const token = useUserStore.getState().accessToken; // OK, no cycle here
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
 
+axiosInstance.interceptors.request.use((config) => {
+  const token = getToken() // OK, no cycle here
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
 
 export default axiosInstance;
