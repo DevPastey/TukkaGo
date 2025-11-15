@@ -46,9 +46,11 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
       console.log(res);
 
-      // set({user: res.data.user, accessToken: user.accessToken, loading: false});
+      const {user, accessToken} = res.data;
+
+      set({user: user, accessToken: accessToken, submitting: false});
         
-      // get().setAccessToken(user.accessToken);
+      await get().setAccessToken(accessToken);
 
       Alert.alert("Success", "Sign up successful");
       return true; // ✅ success
@@ -79,12 +81,12 @@ export const useUserStore = create<UserStore>((set, get) => ({
     try {
       const res = await axiosInstance.post("/auth/login", {email, password} );
 
-      
+      const {user, accessToken} = res.data;
      
-      set({user: res.data, accessToken: user.accessToken, loading: false});
+      set({user: user, accessToken: accessToken, submitting: false});
       
-      get().setAccessToken(user.accessToken);
-      get().checkAuth();
+      await get().setAccessToken(accessToken);
+      await get().checkAuth();
       
       Alert.alert("Success", "Login successful");
       router.replace("/");
@@ -112,9 +114,12 @@ export const useUserStore = create<UserStore>((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
-      set({user: null});
-      } catch (error: any) {
-      Alert.alert("Error", error.response?.data?.message)
+  
+      await SecureStore.deleteItemAsync("accessToken");
+  
+      set({ user: null, accessToken: null });
+    } catch (error: any) {
+      Alert.alert("Error", error.response?.data?.message);
     }
   },
 
@@ -135,7 +140,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     set({checkingAuth: true});
 
     try {
-      const res = await axiosInstance.post("auth/refresh-token", {}, {withCredentials: true});
+      const res = await axiosInstance.post("auth/refresh-token", {});
       set({ checkingAuth: false});
       return res.data;
     } catch (error) {
@@ -150,14 +155,15 @@ export const useUserStore = create<UserStore>((set, get) => ({
     } else {
       await SecureStore.deleteItemAsync("accessToken");
     }
-
+  
     set({ accessToken: token });
   },
-
+  
   loadAccessToken: async () => {
     const token = await SecureStore.getItemAsync("accessToken");
     set({ accessToken: token });
   },
+  
 
 }));
 

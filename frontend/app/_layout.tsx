@@ -2,6 +2,7 @@ import "./global.css";
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import { useUserStore } from "@/stores/useUserStore";
 
 
 export default function RootLayout() {
@@ -13,12 +14,19 @@ export default function RootLayout() {
     "QuickSand-Light": require("../assets/fonts/Quicksand-Light.ttf"),
   });
 
+  const {loadAccessToken} = useUserStore();
+
   useEffect(() => {
     if (error) throw error;
 
     if (fontLoaded) SplashScreen.hideAsync();
 
   }, [fontLoaded, error]);
+
+  useEffect(() => {
+    loadAccessToken();
+  }, []);
+
 
   return <Stack screenOptions={{
     headerShown: false,
