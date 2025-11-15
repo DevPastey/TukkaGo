@@ -1,9 +1,13 @@
 import CustomButton from '@/components/CustomButton';
 import CustomInput from '@/components/CustomInput';
 import axiosInstance from '@/lib/axios';
+import constants from 'expo-constants';
 import { Link } from 'expo-router';
 import { useState } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
+
+
+const MODE= constants.expoConfig?.extra?.MODE;
 
 export default function SignIn() {
 
@@ -53,7 +57,7 @@ export default function SignIn() {
         label="Password"
         secureTextEntry={true}
       />
-      <CustomButton title='Sign In' onPress={() => console.log(email)}/>
+      <CustomButton title='Sign In' onPress={() => console.log(MODE)}/>
 
       <View className=' flex flex-row justify-center mt-5 gap-2'>
         <Text className='base-regular text-gray-100'>Don't have an Account?</Text>

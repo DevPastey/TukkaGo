@@ -121,17 +121,17 @@ export const login = async(req: any, res: Response) => {
             await storeRefreshToken(user._id, refreshToken);
 
             
-            res.status(200).json({
-                user: {
-                  _id: user._id,
-                  name: user.name,
-                  email: user.email,
-                  role: user.role,
-                },
-                accessToken,         // 👈 send to mobile app
-                refreshToken,        // 👈 send to mobile app
-                message: "Logged in successfully",
-              });
+            // res.status(200).json({
+            //     user: {
+            //       _id: user._id,
+            //       name: user.name,
+            //       email: user.email,
+            //       role: user.role,
+            //     },
+            //     accessToken,         // 👈 send to mobile app
+            //     refreshToken,        // 👈 send to mobile app
+            //     message: "Logged in successfully",
+            // });
 
             res.status(200).json({message: "Logged in succesfully"});
             
