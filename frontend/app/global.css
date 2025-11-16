@@ -103,15 +103,15 @@
     }
 
     .base-bold {
-        @apply text-lg font-quicksand-bold !important;
+        @apply text-base font-quicksand-bold !important;
     }
 
     .base-semibold {
-        @apply text-lg font-quicksand-semibold;
+        @apply text-base font-quicksand-semibold;
     }
 
     .base-regular {
-        @apply text-lg font-quicksand;
+        @apply text-base font-quicksand;
     }
 
     .paragraph-bold {

@@ -79,7 +79,7 @@ interface CustomHeaderProps {
 interface CustomInputProps {
     placeholder?: string;
     value?: string;
-    onChangeText?: (e: TextInputChangeEvent) => void;
+    onChangeText?: (text: string) => void;
     label: string;
     secureTextEntry?: boolean;
     autoCorrect?: boolean;

@@ -21,7 +21,7 @@ interface UserStore {
   accessToken: string | null;
   setAccessToken: (token: string | null) => Promise<void>;
   loadAccessToken: () => Promise<void>;
-  submitting: boolean;
+  isSubmitting: boolean;
 
 };
 
@@ -33,13 +33,13 @@ export const useUserStore = create<UserStore>((set, get) => ({
   checkingAuth: true,
   errors: {},
   accessToken: null,
-  submitting: false,
+  isSubmitting: false,
   
 
   setErrors: (errors: any) => set(() => ({ errors })),
 
   signup: async ({name, email, password, confirmPassword}: FormShape) => {
-    set({submitting: true});
+    set({isSubmitting: true});
     
 
     try {
@@ -49,14 +49,15 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
       const {user, accessToken} = res.data;
 
-      set({user: user, accessToken: accessToken, submitting: false});
+      set({user: user, accessToken: accessToken, isSubmitting: false});
         
       await get().setAccessToken(accessToken);
 
       Alert.alert("Success", "Sign up successful");
+      router.replace("/");
       return true; // ✅ success
     } catch (error: any) {
-      set({ submitting: false});
+      set({ isSubmitting: false});
 
       // ✅ Type-safe error handling
       if (axios.isAxiosError(error)) {
@@ -72,19 +73,19 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
       return false; // ❌ failed
     } finally {
-      set({ submitting: false });
+      set({ isSubmitting: false });
     }
   },
 
   login: async({email, password}: LoginProps) => {
-    set({submitting: true});
+    set({isSubmitting: true});
     
     try {
       const res = await axiosInstance.post("/auth/login", {email, password} );
 
       const {user, accessToken} = res.data;
      
-      set({user: user, accessToken: accessToken, submitting: false});
+      set({user: user, accessToken: accessToken, isSubmitting: false});
       
       await get().setAccessToken(accessToken);
       await get().checkAuth();
@@ -94,7 +95,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
       return true;
 
     } catch (error) {
-      set({loading: false});
+      set({ isSubmitting: false});
     
     if (axios.isAxiosError(error)) {
       const message =

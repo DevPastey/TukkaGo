@@ -1,6 +1,7 @@
 import CustomButton from '@/components/CustomButton';
 import CustomInput from '@/components/CustomInput';
 import axiosInstance from '@/lib/axios';
+import { useUserStore } from '@/stores/useUserStore';
 import constants from 'expo-constants';
 import { Link } from 'expo-router';
 import { useState } from 'react';
@@ -11,28 +12,33 @@ const MODE= constants.expoConfig?.extra?.MODE;
 
 export default function SignIn() {
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {isSubmitting, login} = useUserStore();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
-  const [ password, setPassword ] = useState<string>("");
-  const [ email, setEmail ] = useState<string>("");
-  
-    const submit = async() => { 
+    const handleSubmit = async() => { 
       if(!form.email || !form.password) {
         Alert.alert("Error", "Please fill all input fields");
       };
 
-      setIsSubmitting(true);
+      
 
-      try {
-        // Autheticate user
-        await axiosInstance.post("")
-      } catch (error) {
-        console.log("Error", error)
-      }
+      console.log(form);
+
+      const success = await login(form);
+
+      // if(success) {
+      //   setForm({
+      //     email: "",
+      //     password: "",
+      //   })
+      // };
+
+
+  
     }
 
   return (
@@ -42,8 +48,8 @@ export default function SignIn() {
 
       <CustomInput 
         placeholder="Enter your email"
-        value={email} 
-        onChangeText={ text => setEmail( text ) }
+        value={form.email} 
+        onChangeText={ (text) => setForm( (prev) => ({ ...prev, email: text }) ) }
         autoCorrect={false}
         label="Email"
         keyboardType="email-address"
@@ -51,13 +57,13 @@ export default function SignIn() {
 
       <CustomInput 
         placeholder="Enter your password"
-        value={password} 
-        onChangeText={text => setPassword( text )  } 
+        value={form.password} 
+        onChangeText={ (text) => setForm( (prev) => ({ ...prev, password: text }) ) } 
         autoCorrect={false}
         label="Password"
         secureTextEntry={true}
       />
-      <CustomButton title='Sign In' onPress={() => console.log(MODE)}/>
+      <CustomButton title='Sign In' isLoading={isSubmitting} onPress={handleSubmit}/>
 
       <View className=' flex flex-row justify-center mt-5 gap-2'>
         <Text className='base-regular text-gray-100'>Don't have an Account?</Text>

@@ -5,7 +5,6 @@ import cn from "clsx";
 
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView, Dimensions, ImageBackground, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { set } from 'mongoose';
 
 export default function _Layout() {
   const [activeTab, setActiveTab] = useState<"sign-in" | "sign-up">("sign-in");
@@ -39,11 +38,11 @@ export default function _Layout() {
         
 
         <View className='flex flex-row mt-8 justify-center items-center bg-white-100 mx-6 py-1 px-1 rounded'>
-          <TouchableOpacity className={cn('justify-center items-center bg-white py-4 w-[50%] rounded', activeTab === "sign-in" ? "bg-white" : "bg-white-100")} onPress={() => handlePress('sign-in')}>
-            <Text className={cn("font-semibold", activeTab === "sign-in" ? "text-primary" : "text-gray-100")}>Sign In</Text>
+          <TouchableOpacity className={cn('justify-center items-center py-3 w-[50%] rounded', activeTab === "sign-in" ? "bg-white" : "bg-white-100")} onPress={() => handlePress('sign-in')}>
+            <Text className={cn("font-semibold text-base", activeTab === "sign-in" ? "text-primary" : "text-gray-100")}>Sign In</Text>
           </TouchableOpacity>
-          <TouchableOpacity className={cn('justify-center items-center bg-white flex w-[50%] py-4 rounded', activeTab === "sign-up" ? "bg-white" : "bg-white-100")} id='sign-up' onPress={() => handlePress('sign-up')} > 
-          <Text className={cn("font-semibold" , activeTab === "sign-up"  ? "text-primary" : "text-gray-100")} >Sign Up</Text>
+          <TouchableOpacity className={cn('justify-center items-center flex w-[50%] py-3 rounded', activeTab === "sign-up" ? "bg-white" : "bg-white-100")} onPress={() => handlePress('sign-up')} > 
+          <Text className={cn("font-semibold text-base" , activeTab === "sign-up"  ? "text-primary" : "text-gray-100")} >Sign Up</Text>
           </TouchableOpacity>
         </View>
         <Slot  />

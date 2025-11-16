@@ -14,7 +14,7 @@ export default function CustomInput({
             autoCapitalize='none'
             autoCorrect={autoCorrect}
             value={value}
-            onChange={onChangeText}
+            onChangeText={onChangeText}
             secureTextEntry={secureTextEntry}
             keyboardType={keyboardType}
             onFocus={() => setIsFocused(true)}
